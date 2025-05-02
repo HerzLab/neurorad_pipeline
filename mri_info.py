@@ -25,7 +25,7 @@ def get_transform(file, transform_type):
     """
     mri_info_loc = os.path.join(paths.freesurfer_bin, 'mri_info')
     log.debug("Executing mri_info at {}".format(mri_info_loc))
-    output = subprocess.check_output([mri_info_loc, file, '--{}'.format(transform_type)])
+    output = subprocess.check_output([mri_info_loc, file, '--{}'.format(transform_type)], encoding='UTF-8')
     num_output = [[float(x) for x in line.split()] for line in output.split('\n') if len(line)>0]
     return np.matrix(num_output)
 

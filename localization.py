@@ -12,6 +12,13 @@ class InvalidFieldException(Exception):
 class InvalidContactException(Exception):
     pass
 
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.bytes_):
+            return obj.decode('utf-8')
+        elif isinstance(obj, np.generic):
+            return obj.item()
+        return super().default(obj)
 
 def merge_repeated_keys(pairs):
     d = {}
@@ -109,10 +116,10 @@ class Localization(object):
 
     def to_json(self, json_file):
         """ Dumps to a json file """
-        clean_json_dump(self._contact_dict, open(json_file, 'w'), indent=2, sort_keys=True)
+        clean_json_dump(self._contact_dict, open(json_file, 'w'), indent=2, sort_keys=True, cls=NumpyEncoder)
 
     def to_jsons(self):
-        return clean_json_dumps(self._contact_dict, indent=2, sort_keys=True)
+        return clean_json_dumps(self._contact_dict, indent=2, sort_keys=True, cls=NumpyEncoder)
 
     def to_vox_mom(self,fname):
         csv_out = []
@@ -196,7 +203,7 @@ class Localization(object):
             return np.array(contact_dict['coordinate_spaces'][coordinate_space][coordinate_type], ndmin=2)
         except KeyError:
             output = np.empty((1, 3))
-            output[:] = np.NAN
+            output[:] = np.nan
             return output
 
     def get_contact_coordinates(self, coordinate_space, contacts=None, coordinate_type='raw'):

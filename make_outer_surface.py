@@ -69,7 +69,7 @@ def make_outer_surface(filled_file,output_surface_file,se_diameter = 15):
         return
     # read MRI
     volume = nbfs.MGHImage.from_filename(filled_file)
-    volume = volume.get_data()
+    volume = np.asanyarray(volume.dataobj)
 
     # change elements from {0,1} to {0,255}
     volume *= 255

@@ -10,7 +10,7 @@ source('doSnapDykstra_experimental.R')
 
 
 
-libloc = '/home2/RAM_maint/R_packages'
+libloc = '/oceanus/collab/herz-lab/processing_code/R_packages'
 
 radius = 20 # radius around electrodes to keep vertices
 xtol_rel=0.001 # tolerance for optimization 0.01 - 0.000001
@@ -24,7 +24,7 @@ libraries = c('nloptr','spam','maps','fields',
 installed = rownames(installed.packages(lib.loc=libloc))
 present = libraries %in% installed
 if (all(present)) {
-  invisible(lapply(libraries, require, character.only=T,lib.loc=libloc))
+    invisible(lapply(libraries, require, character.only=T,lib.loc=libloc))
 } else {
     r <- getOption("repos")
     r["CRAN"] <- "http://cran.us.r-project.org"
@@ -37,6 +37,12 @@ if (all(present)) {
 }
 ############
 
+# I don't think this is needed (same thing is done by line 27)
+# I added it for testing, but am not sure if it still needed
+# It doesn't hurt anything though, so I'm leaving it
+for (i in 1:length(libraries)) {
+    library(libraries[i], character.only=T, lib.loc=libloc)
+}
 
 ############
 # load LOC coordinates

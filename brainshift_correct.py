@@ -67,8 +67,8 @@ def brainshift_correct(loc, sub, outfolder, fsfolder, overwrite=False):
 
         os.chdir(og_dir)
     ### load the corrected output
-    corrected_data = pd.DataFrame.from_csv(corrfile)
-    newnames=corrected_data.index.values
+    corrected_data = pd.read_csv(corrfile)
+    newnames=corrected_data['labels'].values
 
 
     # put data in loc
@@ -205,9 +205,9 @@ def get_dk_vertices(electrode_coords,vertex_coords):
     # Joel added below to get fsaverage vertex coords
 def get_fsavg_vertices(vertex_inds,hemi='lh'):
     if hemi=='lh':
-        coords_avg =nb.freesurfer.read_geometry('/data/eeg/freesurfer/subjects/fsaverage/surf/lh.pial')[0]
+        coords_avg =nb.freesurfer.read_geometry('/oceanus/collab/herz-lab/raw_data/kahana/subjects/freesurfer/subjects/fsaverage/surf/lh.pial')[0]
     else:
-        coords_avg =nb.freesurfer.read_geometry('/data/eeg/freesurfer/subjects/fsaverage/surf/rh.pial')[0]
+        coords_avg =nb.freesurfer.read_geometry('/oceanus/collab/herz-lab/raw_data/kahana/subjects/freesurfer/subjects/fsaverage/surf/rh.pial')[0]
     return coords_avg[vertex_inds]
 
 
